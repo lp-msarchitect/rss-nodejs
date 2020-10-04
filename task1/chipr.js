@@ -1,6 +1,6 @@
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 
-const code = (str, shift, isEncode = true) => {
+const code = (str, shift, isEncode) => {
   const arr = str.split('');
   const alphabet = isEncode
     ? ALPHABET

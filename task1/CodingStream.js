@@ -2,7 +2,7 @@ const { Transform } = require('stream');
 const code = require('./chipr');
 
 class CodingStream extends Transform {
-  constructor({ shift, isEncode }) {
+  constructor(shift, isEncode) {
     super();
     this.shift = shift;
     this.isEncode = isEncode;
