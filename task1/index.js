@@ -16,12 +16,20 @@ program
   .option('-a, --action <action>', 'an action encode/decode')
   .parse(process.argv);
 
-const { input, output, shift } = program.opts();
+const { input, output, shift, action } = program.opts();
 
 const readStream = fs.createReadStream(input, 'utf-8');
 const writeStream = fs.createWriteStream(output, 'utf-8');
 
-const transformStream = new CodingStream(shift);
+let transformStream;
+
+console.log(action);
+
+if (action === 'encode') {
+  transformStream = new CodingStream(shift, true);
+} else if (action === 'decode') {
+  transformStream = new CodingStream(shift, false);
+}
 
 pipeline(readStream, transformStream, writeStream).then(() => {
   console.log('Done');
