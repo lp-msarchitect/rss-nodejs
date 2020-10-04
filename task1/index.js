@@ -2,7 +2,7 @@ const commander = require('commander');
 const fs = require('fs');
 const util = require('util');
 const stream = require('stream');
-const TransformStream = require('./transformStream');
+const CodingStream = require('./CodingStream');
 
 const pipeline = util.promisify(stream.pipeline);
 const program = new commander.Command();
@@ -16,14 +16,12 @@ program
   .option('-a, --action <action>', 'an action encode/decode')
   .parse(process.argv);
 
-const programOptions = program.opts();
+const { input, output, shift } = program.opts();
 
-const inputFileName = programOptions.input;
-const outputFileName = programOptions.output;
+const readStream = fs.createReadStream(input, 'utf-8');
+const writeStream = fs.createWriteStream(output, 'utf-8');
 
-const readStream = fs.createReadStream(inputFileName, 'utf-8');
-const writeStream = fs.createWriteStream(outputFileName, 'utf-8');
-const transformStream = new TransformStream();
+const transformStream = new CodingStream(shift);
 
 pipeline(readStream, transformStream, writeStream).then(() => {
   console.log('Done');
