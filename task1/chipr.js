@@ -11,6 +11,11 @@ const code = (str, shift, isEncode) => {
     const isUp = char.toUpperCase() === char;
     char = char.toLowerCase();
     const index = alphabet.indexOf(char);
+
+    if (index === -1) {
+      return char;
+    }
+
     const codeIndex = (index + shift) % alphabet.length;
     let codeChar = alphabet[codeIndex];
     codeChar = isUp ? codeChar.toUpperCase() : codeChar;
