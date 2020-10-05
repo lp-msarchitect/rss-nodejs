@@ -1,36 +1,49 @@
 const commander = require('commander');
-const fs = require('fs');
 const util = require('util');
 const stream = require('stream');
 const CodingStream = require('./CodingStream');
+const { inputStream, outputStream } = require('./IOStreams.js');
+const checkOptions = require;
 
 const pipeline = util.promisify(stream.pipeline);
-const program = new commander.Command();
 
-program.storeOptionsAsProperties(false);
+async function processRun() {
+  try {
+    const program = new commander.Command();
 
-program
-  .option('-s, --shift <shift>', 'a shist')
-  .option('-i, --input <input-file>', 'an input file')
-  .option('-o, --output <output-file>', 'an output file')
-  .option('-a, --action <action>', 'an action encode/decode')
-  .parse(process.argv);
+    program.storeOptionsAsProperties(false);
 
-const { input, output, shift, action } = program.opts();
+    program
+      .option('-s, --shift <shift>', 'a shist')
+      .option('-i, --input <input-file>', 'an input file')
+      .option('-o, --output <output-file>', 'an output file')
+      .option('-a, --action <action>', 'an action encode/decode')
+      .parse(process.argv);
 
-const readStream = fs.createReadStream(input, 'utf-8');
-const writeStream = fs.createWriteStream(output, 'utf-8');
+    const { input, output, shift, action } = checkOptions(program.opts());
 
-let transformStream;
+    const readStream = await inputStream(input);
+    const writeStream = await outputStream(output);
 
-console.log(action);
+    let transformStream;
 
-if (action === 'encode') {
-  transformStream = new CodingStream(shift, true);
-} else if (action === 'decode') {
-  transformStream = new CodingStream(shift, false);
+    if (action === 'encode') {
+      transformStream = new CodingStream(shift, true);
+    }
+    if (action === 'decode') {
+      transformStream = new CodingStream(shift, false);
+    }
+
+    pipeline(readStream, transformStream, writeStream).then(() => {
+      console.log('Done');
+    });
+
+    process.stdout.write(`Operation '${action}' is done.`);
+  } catch (error) {
+    process.stderr.write(`${error.name}. ${error.message}\n`);
+    // eslint-disable-next-line no-process-exit
+    process.exit(error.exitCode);
+  }
 }
 
-pipeline(readStream, transformStream, writeStream).then(() => {
-  console.log('Done');
-});
+processRun();
