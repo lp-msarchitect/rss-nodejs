@@ -3,7 +3,7 @@ const util = require('util');
 const stream = require('stream');
 const CodingStream = require('./CodingStream');
 const { inputStream, outputStream } = require('./IOStreams.js');
-const checkOptions = require;
+const checkOptions = require('./checkOptions.js');
 
 const pipeline = util.promisify(stream.pipeline);
 
@@ -34,11 +34,9 @@ async function processRun() {
       transformStream = new CodingStream(shift, false);
     }
 
-    pipeline(readStream, transformStream, writeStream).then(() => {
-      console.log('Done');
-    });
+    await pipeline(readStream, transformStream, writeStream);
 
-    process.stdout.write(`Operation '${action}' is done.`);
+    process.stdout.write(`Operation '${action}' is done.\n`);
   } catch (error) {
     process.stderr.write(`${error.name}. ${error.message}\n`);
     // eslint-disable-next-line no-process-exit
