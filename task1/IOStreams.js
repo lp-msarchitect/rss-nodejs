@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 async function inputStream(filePath) {
-  if (filePath === 'stdin') {
+  if (filePath === undefined) {
     return process.stdin;
   }
   try {
@@ -31,7 +31,7 @@ async function inputStream(filePath) {
 }
 
 async function outputStream(filePath) {
-  if (filePath === 'stdout') {
+  if (filePath === undefined) {
     return process.stdout;
   }
   try {
