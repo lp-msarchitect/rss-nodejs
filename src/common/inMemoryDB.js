@@ -11,6 +11,10 @@ const DB = {
   },
   getUserById(id) {
     return this.base.users.find(user => user.id === id);
+  },
+  createUser(user) {
+    this.base.users.push(user);
+    return this.getUserById(user.id);
   }
 };
 
