@@ -1,7 +1,11 @@
 const DB = require('../../common/inMemoryDB');
 
 const getAll = async () => {
-  return DB;
+  return DB.getAllUsers();
 };
 
-module.exports = { getAll };
+const getById = async id => {
+  return DB.getUserById(id);
+};
+
+module.exports = { getAll, getById };
