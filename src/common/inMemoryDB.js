@@ -7,14 +7,16 @@ const base = {
 const DB = {
   base,
   getAllUsers() {
-    return this.base.users;
+    return [...this.base.users];
   },
   getUserById(id) {
-    return this.base.users.find(user => user.id === id);
+    const user = this.base.users.find(el => el.id === id);
+    return { ...user };
   },
   createUser(user) {
     this.base.users.push(user);
-    return this.getUserById(user.id);
+    const newUser = this.getUserById(user.id);
+    return { ...newUser };
   }
 };
 
