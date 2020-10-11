@@ -8,12 +8,12 @@ const getById = async id => {
   return DataBase.getItem('boards', id);
 };
 
-const create = async user => {
-  return DataBase.createItem('boards', user);
+const create = async board => {
+  return DataBase.createItem('boards', board);
 };
 
-const update = async user => {
-  return DataBase.updateItem('boards', user);
+const update = async board => {
+  return DataBase.updateItem('boards', board);
 };
 
 const deleteBoard = async id => {
