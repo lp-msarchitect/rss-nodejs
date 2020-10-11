@@ -12,4 +12,8 @@ const create = async user => {
   return DataBase.createItem('users', user);
 };
 
-module.exports = { getAll, getById, create };
+const update = async user => {
+  return DataBase.updateItem('users', user);
+};
+
+module.exports = { getAll, getById, create, update };

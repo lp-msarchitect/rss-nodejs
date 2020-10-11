@@ -6,17 +6,18 @@ const DB = {
   boards: [],
   tasks: []
 };
-
-const createItem = (tableName, item) => {
-  DB[tableName].push({ ...item, id: uuid() });
-};
-
 const getItem = (tableName, id) => {
   return DB[tableName].find(el => el.id === id);
 };
 
 const getAllItems = tableName => {
   return DB[tableName];
+};
+
+const createItem = (tableName, item) => {
+  const itemData = { ...item, id: uuid() };
+  DB[tableName].push(itemData);
+  return getItem(tableName, itemData.id);
 };
 
 const updateItem = (tableName, item) => {
@@ -32,6 +33,6 @@ const deleteItem = (tableName, id) => {
   DB[tableName] = [...before, ...after];
 };
 
-DB.base.users.push(new User(), new User(), new User());
+DB.users.push(new User(), new User(), new User());
 
 module.exports = { createItem, getItem, getAllItems, updateItem, deleteItem };

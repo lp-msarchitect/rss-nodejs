@@ -15,14 +15,22 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const newUser = await usersService.create(
-    new User({
-      name: req.body.name,
-      login: req.body.login,
-      password: req.body.password
-    })
-  );
+  const newUser = await usersService.create({
+    name: req.body.name,
+    login: req.body.login,
+    password: req.body.password
+  });
   res.json(User.toResponse(newUser));
+});
+
+router.route('/:id').put(async (req, res) => {
+  const user = await usersService.update({
+    name: req.body.name,
+    login: req.body.login,
+    password: req.body.password,
+    id: req.params.id
+  });
+  res.json(User.toResponse(user));
 });
 
 module.exports = router;
