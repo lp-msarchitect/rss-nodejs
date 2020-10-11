@@ -16,4 +16,8 @@ const update = async user => {
   return DataBase.updateItem('users', user);
 };
 
-module.exports = { getAll, getById, create, update };
+const deleteUser = async id => {
+  return DataBase.deleteItem('users', id);
+};
+
+module.exports = { getAll, getById, create, update, deleteUser };

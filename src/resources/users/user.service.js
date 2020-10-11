@@ -16,4 +16,8 @@ const update = user => {
   });
 };
 
-module.exports = { getAll, get, create, update };
+const deleteUser = id => {
+  return usersRepo.deleteUser(id);
+};
+
+module.exports = { getAll, get, create, update, deleteUser };

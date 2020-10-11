@@ -28,9 +28,11 @@ const updateItem = (tableName, item) => {
 
 const deleteItem = (tableName, id) => {
   const index = DB[tableName].findIndex(el => el.id === id);
+  const deletedItem = { ...DB[tableName][index] };
   const before = DB[tableName].slice(0, index);
   const after = DB[tableName].slice(index + 1);
   DB[tableName] = [...before, ...after];
+  return deletedItem;
 };
 
 DB.users.push(new User(), new User(), new User());
