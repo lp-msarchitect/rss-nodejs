@@ -1,4 +1,5 @@
 const User = require('../resources/users/user.model');
+const Board = require('../resources/boards/board.model');
 const uuid = require('uuid');
 
 const DB = {
@@ -35,6 +36,7 @@ const deleteItem = (tableName, id) => {
   return deletedItem;
 };
 
-DB.users.push(new User(), new User(), new User());
+createItem('users', new User());
+createItem('boards', new Board());
 
 module.exports = { createItem, getItem, getAllItems, updateItem, deleteItem };
