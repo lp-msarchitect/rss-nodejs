@@ -1,25 +1,37 @@
 const User = require('../resources/users/user.model');
-
-const base = {
-  users: []
-};
+const uuid = require('uuid');
 
 const DB = {
-  base,
-  getAllUsers() {
-    return [...this.base.users];
-  },
-  getUserById(id) {
-    const user = this.base.users.find(el => el.id === id);
-    return { ...user };
-  },
-  createUser(user) {
-    this.base.users.push(user);
-    const newUser = this.getUserById(user.id);
-    return { ...newUser };
-  }
+  users: [],
+  boards: [],
+  tasks: []
+};
+
+const createItem = (tableName, item) => {
+  DB[tableName].push({ ...item, id: uuid() });
+};
+
+const getItem = (tableName, id) => {
+  return DB[tableName].find(el => el.id === id);
+};
+
+const getAllItems = tableName => {
+  return DB[tableName];
+};
+
+const updateItem = (tableName, item) => {
+  const index = DB[tableName].findIndex(el => el.id === item.id);
+  DB[tableName][index] = { ...DB[tableName][index], ...item };
+  return DB[tableName][index];
+};
+
+const deleteItem = (tableName, id) => {
+  const index = DB[tableName].findIndex(el => el.id === id);
+  const before = DB[tableName].slice(0, index);
+  const after = DB[tableName].slice(index + 1);
+  DB[tableName] = [...before, ...after];
 };
 
 DB.base.users.push(new User(), new User(), new User());
 
-module.exports = DB;
+module.exports = { createItem, getItem, getAllItems, updateItem, deleteItem };
