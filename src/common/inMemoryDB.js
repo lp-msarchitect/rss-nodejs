@@ -8,11 +8,17 @@ const DB = {
   boards: [],
   tasks: []
 };
-const getItem = (tableName, id) => {
+const getItem = (tableName, id, boardId) => {
+  if (boardId) {
+    return DB[tableName].find(el => el.id === id && el.boardId === boardId);
+  }
   return DB[tableName].find(el => el.id === id);
 };
 
-const getAllItems = tableName => {
+const getAllItems = (tableName, id) => {
+  if (id) {
+    return DB[tableName].filter(el => el.boardId === id);
+  }
   return DB[tableName];
 };
 
@@ -28,8 +34,14 @@ const updateItem = (tableName, item) => {
   return DB[tableName][index];
 };
 
-const deleteItem = (tableName, id) => {
-  const index = DB[tableName].findIndex(el => el.id === id);
+const deleteItem = (tableName, id, boardId) => {
+  let index = DB[tableName].findIndex(el => el.id === id);
+  if (boardId) {
+    index = DB[tableName].findIndex(
+      el => el.id === id && el.boardId === boardId
+    );
+  }
+
   const deletedItem = { ...DB[tableName][index] };
   const before = DB[tableName].slice(0, index);
   const after = DB[tableName].slice(index + 1);

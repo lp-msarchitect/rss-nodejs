@@ -1,11 +1,11 @@
 const DataBase = require('../../common/inMemoryDB');
 
-const getAll = async () => {
-  return DataBase.getAllItems('tasks');
+const getAll = async boardId => {
+  return DataBase.getAllItems('tasks', boardId);
 };
 
-const getById = async id => {
-  return DataBase.getItem('tasks', id);
+const getById = async (id, boardId) => {
+  return DataBase.getItem('tasks', id, boardId);
 };
 
 const create = async task => {
@@ -16,8 +16,8 @@ const update = async task => {
   return DataBase.updateItem('tasks', task);
 };
 
-const deleteTask = async id => {
-  return DataBase.deleteItem('tasks', id);
+const deleteTask = async (id, boardId) => {
+  return DataBase.deleteItem('tasks', id, boardId);
 };
 
 module.exports = { getAll, getById, create, update, deleteTask };
