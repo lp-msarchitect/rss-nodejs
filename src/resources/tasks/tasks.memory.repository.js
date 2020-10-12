@@ -20,4 +20,8 @@ const deleteTask = async (id, boardId) => {
   return DataBase.deleteItem('tasks', id, boardId);
 };
 
-module.exports = { getAll, getById, create, update, deleteTask };
+const clearUser = async id => {
+  DataBase.clearFiled('tasks', 'userId', id);
+};
+
+module.exports = { getAll, getById, create, update, deleteTask, clearUser };

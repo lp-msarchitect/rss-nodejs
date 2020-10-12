@@ -49,8 +49,21 @@ const deleteItem = (tableName, id, boardId) => {
   return deletedItem;
 };
 
+const clearFiled = (tableName, fieldName, id) => {
+  DB[tableName].forEach(el => {
+    if (el[fieldName] === id) el[fieldName] = null;
+  });
+};
+
 createItem('users', new User());
 createItem('boards', new Board());
 createItem('tasks', new Task());
 
-module.exports = { createItem, getItem, getAllItems, updateItem, deleteItem };
+module.exports = {
+  createItem,
+  getItem,
+  getAllItems,
+  updateItem,
+  deleteItem,
+  clearFiled
+};
