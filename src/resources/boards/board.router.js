@@ -3,14 +3,16 @@ const boardsService = require('./board.service');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
-  // map user fields to exclude secret fields like "password"
   res.json(boards);
 });
 
 router.route('/:id').get(async (req, res) => {
   const board = await boardsService.get(req.params.id);
-  // map user fields to exclude secret fields like "password"
-  res.json(board);
+  if (board) {
+    res.json(board);
+  } else {
+    res.status(404).send(`Board with id ${req.params.id} not found`);
+  }
 });
 
 router.route('/').post(async (req, res) => {

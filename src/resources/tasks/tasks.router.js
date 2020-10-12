@@ -3,14 +3,16 @@ const tasksService = require('./tasks.service');
 
 router.route('/').get(async (req, res) => {
   const tasks = await tasksService.getAll();
-  // map user fields to exclude secret fields like "password"
   res.json(tasks);
 });
 
 router.route('/:id').get(async (req, res) => {
   const task = await tasksService.get(req.params.id);
-  // map user fields to exclude secret fields like "password"
-  res.json(task);
+  if (task) {
+    res.json(task);
+  } else {
+    res.status(404).send(`Task with id ${req.params.id} not found`);
+  }
 });
 
 router.route('/').post(async (req, res) => {

@@ -11,7 +11,11 @@ router.route('/').get(async (req, res) => {
 router.route('/:id').get(async (req, res) => {
   const user = await usersService.get(req.params.id);
   // map user fields to exclude secret fields like "password"
-  res.json(User.toResponse(user));
+  if (user) {
+    res.json(User.toResponse(user));
+  } else {
+    res.status(404).send(`User with id ${req.params.id} not found`);
+  }
 });
 
 router.route('/').post(async (req, res) => {
