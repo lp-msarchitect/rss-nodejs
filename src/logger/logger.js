@@ -6,7 +6,8 @@ const logRequest = (req, res, next) => {
 
   finished(res, () => {
     const ms = Date.now() - start;
-    console.log(`${method} ${url} [${ms}ms]`);
+    const { statusCode } = res;
+    console.log(`${method} ${url} ${statusCode} [${ms}ms]`);
   });
 
   next();
