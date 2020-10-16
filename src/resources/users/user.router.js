@@ -1,6 +1,20 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
+const Joi = require('joi');
+
+const newUserSchema = Joi.object({
+  name: Joi.string().required(),
+  login: Joi.string().required(),
+  password: Joi.string().required()
+});
+
+const userSchema = Joi.object({
+  name: Joi.string(),
+  login: Joi.string(),
+  password: Joi.string(),
+  id: Joi.string().required()
+});
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -18,7 +32,11 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
-router.route('/').post(async (req, res) => {
+router.route('/').post(async (req, res, next) => {
+  const { error } = newUserSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
   const newUser = await usersService.create({
     name: req.body.name,
     login: req.body.login,
@@ -27,7 +45,11 @@ router.route('/').post(async (req, res) => {
   res.json(User.toResponse(newUser));
 });
 
-router.route('/:id').put(async (req, res) => {
+router.route('/:id').put(async (req, res, next) => {
+  const { error } = userSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
   const user = await usersService.update({
     name: req.body.name,
     login: req.body.login,
