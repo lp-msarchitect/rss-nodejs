@@ -43,4 +43,12 @@ app.use((err, req, res) => {
   console.log(err);
 });
 
+process.on('uncaughtExceptionMonitor', error => {
+  console.log(`captured error: ${error.message}`);
+});
+
+process.on('unhandledRejection', reason => {
+  console.log(`Unhandled rejection detected: ${reason.message}`);
+});
+
 module.exports = app;

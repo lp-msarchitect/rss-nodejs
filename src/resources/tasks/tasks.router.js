@@ -4,20 +4,24 @@ const Joi = require('joi');
 
 const newTaskSchema = Joi.object({
   title: Joi.string().required(),
-  order: Joi.string().required(),
+  order: Joi.number().required(),
   description: Joi.string().required(),
-  userId: Joi.string().required(),
-  boardId: Joi.string().required(),
-  columnId: Joi.string().required()
+  userId: Joi.string()
+    .allow(null)
+    .required(),
+  boardId: Joi.string()
+    .allow(null)
+    .required(),
+  columnId: Joi.string().allow(null)
 });
 
 const putTaskSchema = Joi.object({
   title: Joi.string(),
-  order: Joi.string(),
+  order: Joi.number(),
   description: Joi.string(),
-  userId: Joi.string(),
-  boardId: Joi.string(),
-  columnId: Joi.string(),
+  userId: Joi.string().allow(null),
+  boardId: Joi.string().allow(null),
+  columnId: Joi.string().allow(null),
   id: Joi.string().required()
 });
 
