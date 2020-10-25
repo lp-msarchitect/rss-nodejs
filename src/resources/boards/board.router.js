@@ -1,5 +1,18 @@
 const router = require('express').Router();
 const boardsService = require('./board.service');
+const Joi = require('joi');
+
+const newBoardSchema = Joi.object({
+  id: Joi.string(),
+  title: Joi.string().required(),
+  columns: Joi.array().required()
+});
+
+const putBoardSchema = Joi.object({
+  title: Joi.string(),
+  columns: Joi.array(),
+  id: Joi.string().required()
+});
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
@@ -15,7 +28,11 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
-router.route('/').post(async (req, res) => {
+router.route('/').post(async (req, res, next) => {
+  const { error } = newBoardSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
   const newBoard = await boardsService.create({
     title: req.body.title,
     columns: req.body.columns
@@ -23,7 +40,11 @@ router.route('/').post(async (req, res) => {
   res.json(newBoard);
 });
 
-router.route('/:id').put(async (req, res) => {
+router.route('/:id').put(async (req, res, next) => {
+  const { error } = putBoardSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
   const board = await boardsService.update({
     title: req.body.title,
     columns: req.body.columns,
