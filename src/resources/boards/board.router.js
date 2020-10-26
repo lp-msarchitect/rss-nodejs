@@ -3,15 +3,13 @@ const boardsService = require('./board.service');
 const Joi = require('joi');
 
 const newBoardSchema = Joi.object({
-  id: Joi.string(),
   title: Joi.string().required(),
   columns: Joi.array().required()
 });
 
 const putBoardSchema = Joi.object({
   title: Joi.string(),
-  columns: Joi.array(),
-  id: Joi.string().required()
+  columns: Joi.array()
 });
 
 router.route('/').get(async (req, res) => {
