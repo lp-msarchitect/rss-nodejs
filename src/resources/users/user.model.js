@@ -1,15 +1,19 @@
-class User {
-  constructor({ name = 'USER', login = 'user', password = 'P@55w0rd' } = {}) {
-    this.name = name;
-    this.login = login;
-    this.password = password;
-    this.id = '';
-  }
+const mongoose = require('mongoose');
 
-  static toResponse(user) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
-}
+const userSchema = new mongoose.Schema(
+  {
+    name: String,
+    login: String,
+    password: String
+  },
+  { versionKey: false, collection: 'users' }
+);
+
+userSchema.statics.toResponse = user => {
+  const { id, name, login } = user;
+  return { id, name, login };
+};
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

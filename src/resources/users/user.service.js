@@ -10,11 +10,8 @@ const create = user => {
   return usersRepo.create(new User(user));
 };
 
-const update = user => {
-  return usersRepo.update({
-    ...new User(user),
-    id: user.id
-  });
+const update = (id, user) => {
+  return usersRepo.update(id, user);
 };
 
 const deleteUser = async id => {

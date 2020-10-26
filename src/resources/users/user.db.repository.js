@@ -1,26 +1,23 @@
+const User = require('./user.model');
+
 const getAll = async () => {
-  throw Error();
-  //   return DataBase.getAllItems('users');
+  return User.find({});
 };
 
-const getById = async () => {
-  throw Error();
-  //   return DataBase.getItem('users', id);
+const getById = async id => {
+  return User.findById(id);
 };
 
-const create = async () => {
-  throw Error();
-  //   return DataBase.createItem('users', user);
+const create = async user => {
+  return User.create(user);
 };
 
-const update = async () => {
-  throw Error();
-  //   return DataBase.updateItem('users', user);
+const update = async (id, user) => {
+  return User.updateOne({ _id: id }, user);
 };
 
-const deleteUser = async () => {
-  throw Error();
-  //   return DataBase.deleteItem('users', id);
+const deleteUser = async id => {
+  return (await User.deleteOne({ _id: id })).deletedCount;
 };
 
 module.exports = { getAll, getById, create, update, deleteUser };

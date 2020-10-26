@@ -9,12 +9,12 @@ const newUserSchema = Joi.object({
   password: Joi.string().required()
 });
 
-const userSchema = Joi.object({
-  name: Joi.string(),
-  login: Joi.string(),
-  password: Joi.string(),
-  id: Joi.string().required()
-});
+// const userSchema = Joi.object({
+//   name: Joi.string(),
+//   login: Joi.string(),
+//   password: Joi.string(),
+//   id: Joi.string().required()
+// });
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -42,19 +42,14 @@ router.route('/').post(async (req, res, next) => {
     login: req.body.login,
     password: req.body.password
   });
+  console.log('newUser', newUser);
   res.json(User.toResponse(newUser));
 });
 
-router.route('/:id').put(async (req, res, next) => {
-  const { error } = userSchema.validate(req.body);
-  if (error) {
-    return next(error);
-  }
-  const user = await usersService.update({
-    name: req.body.name,
-    login: req.body.login,
-    password: req.body.password,
-    id: req.params.id
+router.route('/:id').put(async (req, res) => {
+  // TODO Validation user update
+  const user = await usersService.update(req.params.id, {
+    ...req.body
   });
   res.json(User.toResponse(user));
 });
