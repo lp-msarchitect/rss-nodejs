@@ -1,6 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const tasksService = require('./tasks.service');
 const Joi = require('joi');
+// const Task = require('./tasks.model');
 
 const newTaskSchema = Joi.object({
   title: Joi.string().required(),
@@ -21,8 +22,7 @@ const putTaskSchema = Joi.object({
   description: Joi.string(),
   userId: Joi.string().allow(null),
   boardId: Joi.string().allow(null),
-  columnId: Joi.string().allow(null),
-  id: Joi.string().required()
+  columnId: Joi.string().allow(null)
 });
 
 router.route('/').get(async (req, res) => {

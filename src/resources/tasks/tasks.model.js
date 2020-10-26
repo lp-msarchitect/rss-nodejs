@@ -1,20 +1,21 @@
-class Task {
-  constructor({
-    title = 'BOARD',
-    order = 0,
-    description = '',
-    userId = '',
-    boardId = '',
-    columnId = ''
-  } = {}) {
-    this.id = '';
-    this.title = title;
-    this.order = order;
-    this.description = description;
-    this.userId = userId;
-    this.boardId = boardId;
-    this.columnId = columnId;
-  }
-}
+const mongoose = require('mongoose');
+
+const taskSchema = new mongoose.Schema(
+  {
+    title: { type: String, default: 'TASK' },
+    order: Number,
+    description: String,
+    userId: mongoose.Schema.Types.ObjectId,
+    boardId: mongoose.Schema.Types.ObjectId,
+    columnId: mongoose.Schema.Types.ObjectId
+  },
+  { versionKey: false }
+);
+
+taskSchema.statics.toResponse = task => {
+  return { ...task, id: task.id };
+};
+
+const Task = mongoose.model('Task', taskSchema);
 
 module.exports = Task;
