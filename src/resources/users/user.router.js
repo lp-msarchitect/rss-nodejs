@@ -1,3 +1,4 @@
+const { OK, NOT_FOUND, NO_CONTENT } = require('http-status-codes');
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
@@ -19,16 +20,16 @@ const newUserSchema = Joi.object({
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
   // map user fields to exclude secret fields like "password"
-  res.json(users.map(User.toResponse));
+  res.status(OK).json(users.map(User.toResponse));
 });
 
 router.route('/:id').get(async (req, res) => {
   const user = await usersService.get(req.params.id);
   // map user fields to exclude secret fields like "password"
   if (user) {
-    res.json(User.toResponse(user));
+    res.status(OK).json(User.toResponse(user));
   } else {
-    res.status(404).send(`User with id ${req.params.id} not found`);
+    res.status(NOT_FOUND).send(`User with id ${req.params.id} not found`);
   }
 });
 
@@ -43,7 +44,7 @@ router.route('/').post(async (req, res, next) => {
     password: req.body.password
   });
   console.log('newUser', newUser);
-  res.json(User.toResponse(newUser));
+  res.status(OK).json(User.toResponse(newUser));
 });
 
 router.route('/:id').put(async (req, res) => {
@@ -51,12 +52,12 @@ router.route('/:id').put(async (req, res) => {
   const user = await usersService.update(req.params.id, {
     ...req.body
   });
-  res.json(User.toResponse(user));
+  res.status(OK).json(User.toResponse(user));
 });
 
 router.route('/:id').delete(async (req, res) => {
   const user = await usersService.deleteUser(req.params.id);
-  res.json(User.toResponse(user));
+  res.status(NO_CONTENT).json(User.toResponse(user));
 });
 
 module.exports = router;
