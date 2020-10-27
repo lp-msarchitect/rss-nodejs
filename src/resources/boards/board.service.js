@@ -10,11 +10,8 @@ const create = board => {
   return boardsRepo.create(new Board(board));
 };
 
-const update = board => {
-  return boardsRepo.update({
-    ...new Board(board),
-    id: board.id
-  });
+const update = (id, board) => {
+  return boardsRepo.update(id, { board });
 };
 
 const deleteBoard = async id => {

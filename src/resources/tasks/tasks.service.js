@@ -9,11 +9,8 @@ const create = task => {
   return tasksRepo.create(new Task(task));
 };
 
-const update = task => {
-  return tasksRepo.update({
-    ...new Task(task),
-    id: task.id
-  });
+const update = (id, task) => {
+  return tasksRepo.update(id, task);
 };
 
 const deleteTask = (id, boardId) => {
@@ -21,7 +18,7 @@ const deleteTask = (id, boardId) => {
 };
 
 const deleteTasks = boardId => {
-  return tasksRepo.deleteTasks(boardId);
+  return tasksRepo.deleteTasksOnBoard(boardId);
 };
 
 const clearUser = id => {

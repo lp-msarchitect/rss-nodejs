@@ -2,13 +2,14 @@ const { OK, NOT_FOUND, NO_CONTENT } = require('http-status-codes');
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
-const Joi = require('joi');
+// const Joi = require('joi');
 
-const newUserSchema = Joi.object({
-  name: Joi.string().required(),
-  login: Joi.string().required(),
-  password: Joi.string().required()
-});
+// TODO Вынести схемы валидации в отдельный файл
+// const newUserSchema = Joi.object({
+//   name: Joi.string().required(),
+//   login: Joi.string().required(),
+//   password: Joi.string().required()
+// });
 
 // const userSchema = Joi.object({
 //   name: Joi.string(),
@@ -33,17 +34,16 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
-router.route('/').post(async (req, res, next) => {
-  const { error } = newUserSchema.validate(req.body);
-  if (error) {
-    return next(error);
-  }
+router.route('/').post(async (req, res) => {
+  // const { error } = newUserSchema.validate(req.body);
+  // if (error) {
+  //   return next(error);
+  // }
   const newUser = await usersService.create({
     name: req.body.name,
     login: req.body.login,
     password: req.body.password
   });
-  console.log('newUser', newUser);
   res.status(OK).json(User.toResponse(newUser));
 });
 

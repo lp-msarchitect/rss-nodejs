@@ -5,7 +5,8 @@ const getAll = async boardId => {
 };
 
 const getById = async (id, boardId) => {
-  return Task.find({ _id: id, boardId });
+  const task = await Task.findOne({ _id: id, boardId });
+  return task;
 };
 
 const create = async task => {
@@ -25,7 +26,7 @@ const deleteTasksOnBoard = async boardId => {
 };
 
 const clearUser = async id => {
-  return Task.updateMany({ _id: id }, { userId: null });
+  return Task.updateMany({ userId: id }, { userId: null });
 };
 
 module.exports = {
