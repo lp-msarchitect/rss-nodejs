@@ -14,10 +14,7 @@ const connectToDB = cb => {
   db.once('open', () => {
     console.log('Connect!');
     db.dropDatabase();
-    User.insertMany([
-      { name: 'Leonid', login: 'Leonid', password: '123' },
-      { name: 'Vasya', login: 'CyberVasya', password: 'Cyberpunk2077' }
-    ]);
+    User.insertMany([{ name: 'Admin', login: 'admin', password: 'admin' }]);
     cb();
   });
 };
