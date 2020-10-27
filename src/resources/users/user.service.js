@@ -6,8 +6,8 @@ const getAll = () => usersRepo.getAll();
 
 const get = id => usersRepo.getById(id);
 
-const create = user => {
-  const passwordHash = bcrypt.hash(user.password, 10);
+const create = async user => {
+  const passwordHash = await bcrypt.hash(user.password, 10);
   return usersRepo.create({ ...user, password: passwordHash });
 };
 

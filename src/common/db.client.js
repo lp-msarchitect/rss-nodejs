@@ -12,11 +12,12 @@ const connectToDB = cb => {
 
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', () => {
+  db.once('open', async () => {
     console.log('Connect!');
     db.dropDatabase();
+    const hashAdminPassword = await bcrypt.hash('admin', 10);
     User.insertMany([
-      { name: 'Admin', login: 'admin', password: bcrypt.hash('admin', 10) }
+      { name: 'Admin', login: 'admin', password: hashAdminPassword }
     ]);
     cb();
   });
