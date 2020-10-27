@@ -5,7 +5,8 @@ const User = require('../resources/users/user.model');
 const connectToDB = cb => {
   mongoose.connect(config.MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   });
 
   const db = mongoose.connection;

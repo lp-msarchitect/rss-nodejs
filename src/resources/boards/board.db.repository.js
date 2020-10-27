@@ -15,8 +15,7 @@ const create = async board => {
 const update = async (id, board) => {
   console.log('boardId for update', id);
   console.log('board for update', board);
-  return Board.findOneAndUpdate({ _id: id }, { $set: board }, { new: true });
-  // return Board.update({ _id: id }, board);
+  return Board.updateOne({ _id: id }, board);
 };
 
 const deleteBoard = async id => {

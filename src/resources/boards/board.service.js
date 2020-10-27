@@ -11,7 +11,7 @@ const create = board => {
 };
 
 const update = (id, board) => {
-  return boardsRepo.update(id, { board });
+  return boardsRepo.update(id, board);
 };
 
 const deleteBoard = async id => {
