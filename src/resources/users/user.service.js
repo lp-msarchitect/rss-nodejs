@@ -6,6 +6,10 @@ const getAll = () => usersRepo.getAll();
 
 const get = id => usersRepo.getById(id);
 
+const getByLogin = login => {
+  return usersRepo.getByLogin(login);
+};
+
 const create = async user => {
   const passwordHash = await bcrypt.hash(user.password, 10);
   return usersRepo.create({ ...user, password: passwordHash });
@@ -20,4 +24,4 @@ const deleteUser = async id => {
   return usersRepo.deleteUser(id);
 };
 
-module.exports = { getAll, get, create, update, deleteUser };
+module.exports = { getAll, get, create, update, deleteUser, getByLogin };
