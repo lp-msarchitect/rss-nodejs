@@ -30,8 +30,8 @@ app.use('/', (req, res, next) => {
 app.use('/login', loginRouter);
 
 app.use('/users', checkToken, userRouter);
-app.use('/boards', boardRouter);
-app.use('/boards/:boardId/tasks', tasksRouter);
+app.use('/boards', checkToken, boardRouter);
+app.use('/boards/:boardId/tasks', checkToken, tasksRouter);
 
 app.use((err, req, res, next) => {
   if (Joi.isError(err)) {
