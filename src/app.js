@@ -8,6 +8,7 @@ const tasksRouter = require('./resources/tasks/tasks.router');
 const loginRouter = require('./auth/auth.router');
 const logger = require('./logger/logger');
 const Joi = require('joi');
+const { checkToken } = require('./auth/auth.middleware');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -28,7 +29,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/login', loginRouter);
 
-app.use('/users', userRouter);
+app.use('/users', checkToken, userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', tasksRouter);
 
@@ -50,8 +51,8 @@ process.on('uncaughtExceptionMonitor', error => {
   console.log(`captured error: ${error.message}`);
 });
 
-// process.on('unhandledRejection', reason => {
-//   console.log(`Unhandled rejection detected: ${reason.message}`);
-// });
+process.on('unhandledRejection', reason => {
+  console.log(`Unhandled rejection detected: ${reason.message}`);
+});
 
 module.exports = app;
