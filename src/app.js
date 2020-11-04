@@ -5,8 +5,10 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const tasksRouter = require('./resources/tasks/tasks.router');
+const loginRouter = require('./auth/auth.router');
 const logger = require('./logger/logger');
 const Joi = require('joi');
+const { checkToken } = require('./auth/auth.middleware');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -25,9 +27,11 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/users', userRouter);
-app.use('/boards', boardRouter);
-app.use('/boards/:boardId/tasks', tasksRouter);
+app.use('/login', loginRouter);
+
+app.use('/users', checkToken, userRouter);
+app.use('/boards', checkToken, boardRouter);
+app.use('/boards/:boardId/tasks', checkToken, tasksRouter);
 
 app.use((err, req, res, next) => {
   if (Joi.isError(err)) {
@@ -47,8 +51,8 @@ process.on('uncaughtExceptionMonitor', error => {
   console.log(`captured error: ${error.message}`);
 });
 
-// process.on('unhandledRejection', reason => {
-//   console.log(`Unhandled rejection detected: ${reason.message}`);
-// });
+process.on('unhandledRejection', reason => {
+  console.log(`Unhandled rejection detected: ${reason.message}`);
+});
 
 module.exports = app;

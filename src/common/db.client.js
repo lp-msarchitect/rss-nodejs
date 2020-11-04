@@ -1,6 +1,7 @@
 const config = require('./config');
 const mongoose = require('mongoose');
 const User = require('../resources/users/user.model');
+const bcrypt = require('bcrypt');
 
 const connectToDB = cb => {
   mongoose.connect(config.MONGO_CONNECTION_STRING, {
@@ -11,12 +12,12 @@ const connectToDB = cb => {
 
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', () => {
+  db.once('open', async () => {
     console.log('Connect!');
     db.dropDatabase();
+    const hashAdminPassword = await bcrypt.hash('admin', 10);
     User.insertMany([
-      { name: 'Leonid', login: 'Leonid', password: '123' },
-      { name: 'Vasya', login: 'CyberVasya', password: 'Cyberpunk2077' }
+      { name: 'Admin', login: 'admin', password: hashAdminPassword }
     ]);
     cb();
   });

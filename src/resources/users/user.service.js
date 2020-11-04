@@ -1,12 +1,18 @@
 const usersRepo = require('./user.db.repository');
 const tasksService = require('../tasks/tasks.service');
+const bcrypt = require('bcrypt');
 
 const getAll = () => usersRepo.getAll();
 
 const get = id => usersRepo.getById(id);
 
-const create = user => {
-  return usersRepo.create(user);
+const getByLogin = login => {
+  return usersRepo.getByLogin(login);
+};
+
+const create = async user => {
+  const passwordHash = await bcrypt.hash(user.password, 10);
+  return usersRepo.create({ ...user, password: passwordHash });
 };
 
 const update = (id, user) => {
@@ -18,4 +24,4 @@ const deleteUser = async id => {
   return usersRepo.deleteUser(id);
 };
 
-module.exports = { getAll, get, create, update, deleteUser };
+module.exports = { getAll, get, create, update, deleteUser, getByLogin };
